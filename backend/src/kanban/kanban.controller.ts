@@ -13,6 +13,11 @@ export class KanbanController {
     return this.kanbanService.createBoard(dto);
   }
 
+  @Get('boards')
+  getBoards() {
+    return this.kanbanService.getBoards();
+  }
+
   @Get('board/:id')
   getBoard(@Param('id') id: string) {
     return this.kanbanService.getBoardById(id);

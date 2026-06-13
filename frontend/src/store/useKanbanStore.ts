@@ -1,49 +1,83 @@
 import { create } from 'zustand';
-import { fetchBoardData } from '@/services/kanban-api';
-import { KanbanState } from '@/interfaces/kanban.interface';
-import { createKanbanSocket, registerSocketEvents } from '@/services/kanban-socket';
+import {
+    ActivityLog,
+    Board,
+    KanbanState,
+    MoveTaskPayload,
+    TaskMovedServerPayload,
+} from '@/interfaces/kanban.interface';
+import { createBoardSocket } from '@/services/socket.service';
+import { applyTaskMovement } from '@/utils/board-updater';
 
 export const useKanbanStore = create<KanbanState>((set, get) => ({
-  socket: null,
-  board: null,
-  activities: [],
-  isLoading: false,
+    socket: null,
+    board: null,
+    activities: [],
 
-  fetchBoard: async (boardId) => {
-    set({ isLoading: true });
-    try {
-      const board = await fetchBoardData(boardId);
-      set({ board });
-    } catch (error) {
-      console.error('Error en el store cargando el tablero:', error);
-    } finally {
-      set({ isLoading: false });
-    }
-  },
+    initSocket: (boardId: string) => {
+        if (get().socket) return;
 
-  initSocket: (boardId) => {
-    if (get().socket) return;
+        const socket = createBoardSocket();
 
-    const socket = createKanbanSocket(boardId);
+        socket.on('connect', () => {
+            socket.emit('joinBoard', boardId);
+        });
 
-    // Vinculamos los listeners inyectando las mutaciones de Zustand
-    registerSocketEvents(socket, set, get);
+        socket.on('taskMoved', (payload: TaskMovedServerPayload) => {
+            const currentBoard = get().board;
 
-    set({ socket });
-  },
+            if (!currentBoard) return;
 
-  disconnectSocket: () => {
-    const { socket } = get();
-    if (socket) {
-      socket.disconnect();
-      set({ socket: null, board: null, activities: [] });
-    }
-  },
+            const updatedBoard = applyTaskMovement(currentBoard, payload);
 
-  emitMoveTask: (payload) => {
-    const { socket, board } = get();
-    if (socket && board) {
-      socket.emit('moveTask', { boardId: board.id, ...payload });
-    }
-  },
+            set({
+                board: updatedBoard,
+            });
+        });
+
+        socket.on('newActivity', (activity: ActivityLog) => {
+            set((state) => ({
+                activities: [activity, ...state.activities],
+            }));
+        });
+
+        set({
+            socket,
+        });
+    },
+
+    disconnectSocket: () => {
+        const socket = get().socket;
+
+        if (!socket) return;
+
+        socket.disconnect();
+
+        set({
+            socket: null,
+            board: null,
+            activities: [],
+        });
+    },
+
+    emitMoveTask: (payload: Omit<MoveTaskPayload, 'boardId'>) => {
+        const { socket, board } = get();
+
+        if (!socket || !board) return;
+
+        socket.emit('moveTask', {
+            boardId: board.id,
+            ...payload,
+        });
+    },
+
+    setBoard: (board: Board) => {
+        set({ board });
+    },
+
+    addActivity: (activity: ActivityLog) => {
+        set((state) => ({
+            activities: [activity, ...state.activities],
+        }));
+    },
 }));

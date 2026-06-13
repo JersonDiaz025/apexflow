@@ -1,26 +1,77 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+    --color-surface: #f8f9ff;
+    --color-surface-dim: #cbdbf5;
+    --color-surface-bright: #f8f9ff;
+
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #eff4ff;
+    --color-surface-container-high: #e1e9f8;
+
+    --color-primary: #3b82f6;
+    --color-primary-on: #ffffff;
+
+    --color-outline-variant: #d1d5db;
+
+    --color-on-surface: #1f2937;
+    --color-on-surface-variant: #6b7280;
+
+    --radius-precision: 4px;
+
+    /* Tus variables de espaciado añadidas al ecosistema v4 */
+    --w-side: 290px;
+    --w-side-md: 240px;
+    --w-side-small: 73px;
+    --color-bgbody: 246 249 251;
+    --color-primary-custom: 219 39 119;
+    --color-primary-soft: 252 231 243;
+    --color-secondery: 241 245 249;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.hydrated {
+    visibility: inherit;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Aplicación de tu fuente e inicialización del documento */
+html,
+body {
+    font-family:
+        var(--font-inter),
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        'Helvetica Neue',
+        Arial,
+        'Noto Sans',
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji';
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    /* Usando el color blanco/grisáceo limpio en formato RGB que especificaste */
+    background-color: rgb(var(--color-bgbody));
+    @apply text-on-surface;
+}
+
+/* Tus utilidades personalizadas se mantienen intactas */
+.kanban-column {
+    @apply flex flex-col gap-4 min-w-[320px] bg-surface-container-low/50 p-4 rounded-precision;
+}
+
+.task-card {
+    @apply bg-surface-container-lowest border border-outline-variant p-4 shadow-sm hover:shadow-md transition-shadow rounded-precision;
 }

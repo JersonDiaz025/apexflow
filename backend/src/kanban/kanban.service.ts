@@ -1,15 +1,28 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
+import { MoveTaskDto } from '@/kanban/dtos/move-task.dto';
+import { CreateTaskDto } from '@/kanban/dtos/create-task.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBoardDto } from '@/kanban/dtos/create-board.dto';
 import { CreateColumnDto } from '@/kanban/dtos/create-column.dto';
-import { CreateTaskDto } from '@/kanban/dtos/create-task.dto';
-import { MoveTaskDto } from '@/kanban/dtos/move-task.dto';
 import { TaskMovementResult } from '@/kanban/interfaces/kanban-events.interface';
 
 @Injectable()
 export class KanbanService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async getBoards() {
+    return this.prisma.board.findMany({
+      select: {
+        id: true,
+        title: true,
+      },
+      orderBy: {
+        title: 'asc',
+      },
+    });
+  }
+
   /**
    * Crea un tablero (Board) en la base de datos.
    */
