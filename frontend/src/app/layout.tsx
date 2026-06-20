@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import AppLayout from '@/layouts/AppLayout';
+// import AuthProvider from '@/providers/auth.provider';
+// import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
-// import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({
@@ -23,7 +23,12 @@ export default function RootLayout({
     return (
         <html lang='es' className={`${inter.variable}`}>
             <body className='antialiased'>
-                <AppLayout>{children}</AppLayout>
+                <div>Hi. J</div>
+                {/* {children} */}
+                {/* <AppLayout>{children}</AppLayout> */}
+                {/* <Suspense fallback={null}> */}
+                    {/* <AuthProvider>{children}</AuthProvider> */}
+                {/* </Suspense> */}
             </body>
         </html>
     );

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import SideNavbar from '@/components/navbar/SideNavbar';
 import TopNavbar from '@/components/navbar/TopNavbar';
 import BottomNavbar from '@/components/navbar/BottomNavbar';
@@ -18,11 +19,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 <TopNavbar />
 
                 {/* Padding dinámico para mobile por la barra inferior */}
-                <main className='flex-1 overflow-y-auto overflow-x-auto p-4 md:p-8'>
-                    {children}
-                </main>
 
-                {/* Solo visible en pantallas pequeñas (menores a md) */}
+                <Suspense fallback={<div className='flex-1 bg-background' />}>
+                    <main className='flex-1 overflow-y-auto overflow-x-auto p-4 md:p-8'>
+                        {children}
+                    </main>
+                </Suspense>
+
                 <div className='block md:hidden w-full absolute bottom-0 left-0 z-40'>
                     <BottomNavbar />
                 </div>

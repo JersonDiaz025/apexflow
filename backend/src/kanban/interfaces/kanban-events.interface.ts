@@ -7,19 +7,17 @@ export interface MoveTaskPayload {
   taskTitle: string;
   toColumnTitle: string;
 }
-
 export interface TaskMovedEmitPayload {
   taskId: string;
   fromColumnId: string;
   toColumnId: string;
   newOrder: number;
 }
-
 export interface ActivityLogEmitPayload {
   message: string;
   createdAt: Date;
+  userName: string;
 }
-
 export interface TaskMovementResult {
   updatedTask: {
     id: string;
@@ -33,5 +31,6 @@ export interface TaskMovementResult {
     message: string;
     createdAt: Date;
     boardId: string;
+    userId: string;
   };
 }

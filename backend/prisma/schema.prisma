@@ -10,37 +10,59 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id              String        @id @default(uuid())
+  email           String        @unique
+  name            String
+  password        String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  ownedBoards     Board[]       @relation("BoardOwner")    // Tableros que este usuario creó
+  memberBoards    Board[]       @relation("BoardMembers")  // Tableros a los que fue invitado
+  activities      ActivityLog[]                            // Acciones que este usuario realizó
+}
+
 model Board {
-  id          String        @id @default(uuid())
-  title       String
-  columns     Column[]
-  activities  ActivityLog[]
-  createdAt   DateTime      @default(now())
+  id         String        @id @default(uuid())
+  title      String
+  columns    Column[]
+  activities ActivityLog[]
+  createdAt  DateTime      @default(now())
+
+  ownerId    String
+  owner      User          @relation("BoardOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members    User[]        @relation("BoardMembers")
 }
 
 model Column {
-  id        String   @id @default(uuid())
-  title     String
-  order     Int
-  boardId   String
-  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  tasks     Task[]
+  id      String @id @default(uuid())
+  title   String
+  order   Int
+  boardId String
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  tasks   Task[]
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   title       String
   description String?
   order       Int
   columnId    String
-  column      Column   @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  column      Column  @relation(fields: [columnId], references: [id], onDelete: Cascade)
 }
 
 model ActivityLog {
   id        String   @id @default(uuid())
-  message   String   // Ejemplo: "Se movió 'Configurar API' a En Progreso"
+  message   String   // Ejemplo: "movió 'Stripe Connect' a IN PROGRESS"
   createdAt DateTime @default(now())
+
   boardId   String
   board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  // RELACIÓN NUEVA: Quién disparó la acción
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

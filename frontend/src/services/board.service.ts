@@ -7,7 +7,7 @@ import {
     CreateTaskDto,
     IBoardService,
 } from '@/interfaces/kanban.interface';
-import { api } from '@/services/api-client';
+import { api } from '@/axios/api';
 import { KANBAN_ROUTES } from '@/constants/routes.constant';
 
 export const boardService: IBoardService = {
