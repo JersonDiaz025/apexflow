@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 // import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import AppLayout from '@/layouts/AppLayout';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -23,8 +24,7 @@ export default function RootLayout({
     return (
         <html lang='es' className={`${inter.variable}`}>
             <body className='antialiased'>
-                <div>Hi. J</div>
-                {/* {children} */}
+                {children}
                 {/* <AppLayout>{children}</AppLayout> */}
                 {/* <Suspense fallback={null}> */}
                     {/* <AuthProvider>{children}</AuthProvider> */}

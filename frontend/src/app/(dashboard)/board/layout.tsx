@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/AppLayout';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-    return <>{children}</>;
+    return <AppLayout>{children}</AppLayout>;
 };
 
 export default Layout;

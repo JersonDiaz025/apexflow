@@ -4,9 +4,9 @@ import { redirect } from 'next/navigation';
 import { ApiError } from '@/types/auth.types';
 import { FormState } from '@/types/form.types';
 import { createSession } from '@/utils/session.lib';
-import { KANBAN_ROUTES } from '@/constants/routes.constant';
+import { ROUTES } from '@/constants/routes.constant';
 import { INITIAL_FORM_STATE, authSchema } from '@/schemas/auth.schema';
-import { authService } from '@/services/auth/auth.service'; // Asegura minúscula
+import { authService } from '@/services/auth/auth.service';
 
 export async function loginAction(prevState: FormState, formData: FormData): Promise<FormState> {
     let successData = false;
@@ -35,7 +35,7 @@ export async function loginAction(prevState: FormState, formData: FormData): Pro
     }
 
     if (successData) {
-        redirect(KANBAN_ROUTES.BOARD_APP);
+        redirect(ROUTES.BOARDS);
     }
 
     return INITIAL_FORM_STATE;

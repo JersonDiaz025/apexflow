@@ -1,4 +1,4 @@
 export const USERS = {
-  BASE: 'users',
+  BASE: 'user',
   PROFILE: 'profile',
 } as const;

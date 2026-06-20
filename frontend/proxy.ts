@@ -1,9 +1,4 @@
-import {
-    KANBAN_ROUTES,
-    PROTECTED_PREFIXES,
-    PUBLIC_ROUTES,
-    ROUTES,
-} from '@/constants/routes.constant';
+import { PROTECTED_PREFIXES, PUBLIC_ROUTES, ROUTES } from '@/constants/routes.constant';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { SESSION_COOKIE_NAME } from '@/constants/session.constants';
@@ -20,7 +15,7 @@ export function proxy(req: NextRequest) {
     }
 
     if (isAuthRoute && token) {
-        return NextResponse.redirect(new URL(KANBAN_ROUTES.BOARD_APP, req.url));
+        return NextResponse.redirect(new URL(ROUTES.BOARDS, req.url));
     }
 
     return NextResponse.next();

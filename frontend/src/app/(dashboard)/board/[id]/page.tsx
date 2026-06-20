@@ -8,5 +8,5 @@ export default async function BoardPage({ params }: Props) {
     // const response = await boardService.getBoard(boardId);
 
     // return <KanbanBoard initialBoard={[]} />;
-    return <> ee </>;
+    return <> Mostrando board por id</>;
 }

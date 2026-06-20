@@ -1,28 +1,46 @@
-type RouteString = `/${string}` | string;
-// type RouteParams = string | number;
+type RouteString = `/${string}`;
 
-//Auth routes
-export const AUTH = '/auth' as const;
-export const PROTECTED_PREFIXES = ['/board', '/kanban'] as const;
+// Base API Prefix para el backend
+const AUTH_API_PREFIX = '/auth';
+const KANBAN_API_PREFIX = '/kanban';
 
-export const KANBAN_ROUTES = {
-    BOARD_APP: '/board',
-    BOARDS: '/kanban/boards',
-    BOARD_DETAIL: (boardId: string) => `/board/${boardId}` as RouteString,
-    BOARD: (boardId: string) => `/kanban/board/${boardId}`,
-    CREATE_BOARD: '/kanban/board',
-    CREATE_COLUMN: '/kanban/column',
-    CREATE_TASK: '/kanban/task',
-} as const;
-
+/**
+ * 1. RUTAS DEL FRONTEND (Next.js App Router)
+ * Estas son las url que el usuario ve en el navegador y las que usa el Middleware.
+ */
 export const ROUTES = {
     LOGIN: '/login' as RouteString,
-    LOGOUT: '/logout' as RouteString,
     REGISTER: '/register' as RouteString,
-    PROFILE: '/profile',
+    LOGOUT: '/logout' as RouteString,
+    // Rutas Protegidas (Dashboard)
+    BOARDS: '/boards' as RouteString, // Tu Lobby minimalista sin sidebar
+    BOARD_DETAIL: (id: string): RouteString => `/board/${id}`, // El Kanban interno
+    PROFILE: '/profile' as RouteString,
 } as const;
 
+/**
+ * 2. ENDPOINTS DEL BACKEND (NestJS API)
+ * Estas son las url exactas a las que Axios les hace peticiones HTTP.
+ */
+export const API_ENDPOINTS = {
+    AUTH: {
+        LOGIN: `${AUTH_API_PREFIX}/login`,
+        REGISTER: `${AUTH_API_PREFIX}/register`,
+        PROFILE: `user/profile`,
+    },
+    KANBAN: {
+        GET_BOARDS: `${KANBAN_API_PREFIX}/boards`,
+        BOARD_BY_ID: (id: string) => `${KANBAN_API_PREFIX}/board/${id}`,
+        CREATE_BOARD: `${KANBAN_API_PREFIX}/board`,
+        CREATE_COLUMN: `${KANBAN_API_PREFIX}/column`,
+        CREATE_TASK: `${KANBAN_API_PREFIX}/task`,
+    },
+} as const;
+
+/**
+ * 3. SEGURIDAD (Configuración para el Middleware)
+ */
 export const PUBLIC_ROUTES = [ROUTES.LOGIN, ROUTES.REGISTER] as const;
-// Full routes fron request servers services
-export const FULL_REGISTER = `${AUTH}${ROUTES.REGISTER}` as const;
-export const FULL_LOGIN = `${AUTH}${ROUTES.LOGIN}` as const;
+
+// Bloqueamos explícitamente '/boards' y cualquier subruta de '/board' (como /board/123)
+export const PROTECTED_PREFIXES = ['/boards', '/board'] as const;
