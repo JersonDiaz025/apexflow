@@ -1,12 +1,41 @@
+// ========================
+// AUTH DTOs (Frontend)
+// ========================
+
 export interface LoginDto {
     email: string;
     password: string;
 }
 
-export type Avatar = {
-    initials: string;
-    color: string;
-};
+export interface RegisterDto {
+    name: string;
+    email: string;
+    password: string;
+}
+
+// ========================
+// USER (SAFE FRONTEND MODEL)
+// ========================
+
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    createdAt: string;
+}
+
+// ========================
+// AUTH RESPONSE (Backend contract)
+// ========================
+
+export interface AuthResponse {
+    token: string;
+    user: User;
+}
+
+// ========================
+// AUTH STATE (Zustand / Context)
+// ========================
 
 export type AuthState = {
     user: User | null;
@@ -16,32 +45,9 @@ export type AuthState = {
     logout: () => void;
 };
 
-export interface RegisterDto {
-    name: string;
-    username: string;
-    email: string;
-    password: string;
-}
-
-export interface User {
-    id: number;
-    name: string;
-    chatId?: number
-    username: string;
-    createdAt?: string;
-    email: string;
-    avatarColor?: string;
-    color?: Avatar['color'];
-    initials?: Avatar['initials'];
-    memberSince?: string;
-    status?: boolean;
-}
-
-export interface AuthResponse {
-    token: string;
-    message?: string;
-    user: User;
-}
+// ========================
+// API ERROR
+// ========================
 
 export interface ApiError {
     message: string | string[];

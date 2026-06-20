@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
 import { logout } from '@/app/(auth)/logout/route';
-import { profileService } from '@/services/profile.service';
+import { profileService } from '@/services/user/profile.service';
 import { PUBLIC_ROUTES } from '@/constants/routes.constant';
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {

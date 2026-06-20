@@ -1,5 +1,6 @@
 import { AppModule } from '@/app.module';
 import { NestFactory } from '@nestjs/core';
+import cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 
@@ -9,6 +10,8 @@ async function bootstrap() {
 
   const frontendUrl = configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
   const port = configService.get<number>('PORT') || 4000;
+
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true })
@@ -20,6 +23,6 @@ async function bootstrap() {
   });
 
   await app.listen(port);
-  console.log(`Servidor corriendo en puerto :${port}`);
+  console.log(`Server running in port :${port}`);
 }
 bootstrap();

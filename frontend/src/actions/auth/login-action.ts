@@ -4,9 +4,9 @@ import { redirect } from 'next/navigation';
 import { ApiError } from '@/types/auth.types';
 import { FormState } from '@/types/form.types';
 import { createSession } from '@/utils/session.lib';
-import { AuthService } from '@/services/auth/auth.service';
 import { KANBAN_ROUTES } from '@/constants/routes.constant';
 import { INITIAL_FORM_STATE, authSchema } from '@/schemas/auth.schema';
+import { authService } from '@/services/auth/auth.service'; // Asegura minúscula
 
 export async function loginAction(prevState: FormState, formData: FormData): Promise<FormState> {
     let successData = false;
@@ -22,9 +22,8 @@ export async function loginAction(prevState: FormState, formData: FormData): Pro
     }
 
     try {
-        const res = await AuthService.login(result.data);
+        const res = await authService.login(result.data);
         await createSession(res.token);
-        console.log('Exit login', res);
         successData = true;
     } catch (error) {
         const apiError = error as ApiError;

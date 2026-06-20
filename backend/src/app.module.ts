@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from '@/auth/auth.module';
 import { KanbanModule } from '@/kanban/kanban.module';
 import { PrismaModule } from '@/prisma/prisma.module';
 
@@ -8,6 +9,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AuthModule,
     KanbanModule,
     PrismaModule,
   ],

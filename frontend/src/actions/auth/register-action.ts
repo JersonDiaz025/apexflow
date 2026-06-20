@@ -2,10 +2,9 @@
 
 import { redirect } from 'next/navigation';
 import { FormState } from '@/types/form.types';
-import { createSession } from '@/utils/session.lib';
-import { AuthService } from '@/services/auth/auth.service';
 import { ROUTES } from '@/constants/routes.constant';
 import { ApiError, RegisterDto } from '@/types/auth.types';
+import { authService } from '@/services/auth/auth.service';
 import { INITIAL_FORM_STATE, authSchema } from '@/schemas/auth.schema';
 
 export async function registerAction(prevState: FormState, formData: FormData): Promise<FormState> {
@@ -22,8 +21,7 @@ export async function registerAction(prevState: FormState, formData: FormData): 
     }
 
     try {
-        const res = await AuthService.register(result.data as RegisterDto);
-        await createSession(res.token);
+        const res = await authService.register(result.data as RegisterDto);
         isSuccessful = true;
         console.log('Registro', res);
     } catch (error) {

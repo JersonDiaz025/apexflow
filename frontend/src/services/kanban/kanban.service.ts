@@ -7,29 +7,29 @@ import {
     CreateTaskDto,
     IBoardService,
 } from '@/interfaces/kanban.interface';
-import { api } from '@/axios/api';
+import { apiServer } from '@/axios/api-server';
 import { KANBAN_ROUTES } from '@/constants/routes.constant';
 
 export const boardService: IBoardService = {
     getBoards(): Promise<Board[]> {
-        return api.get(KANBAN_ROUTES.BOARDS);
+        return apiServer.get(KANBAN_ROUTES.BOARDS);
     },
 
     getBoard(boardId: string): Promise<Board> {
-        return api.get(KANBAN_ROUTES.BOARD(boardId));
+        return apiServer.get(KANBAN_ROUTES.BOARD(boardId));
     },
 
     createBoard(dto: CreateBoardDto): Promise<Board> {
-        return api.post(KANBAN_ROUTES.CREATE_BOARD, {
+        return apiServer.post(KANBAN_ROUTES.CREATE_BOARD, {
             dto,
         });
     },
 
     createColumn(dto: CreateColumnDto): Promise<Column> {
-        return api.post(KANBAN_ROUTES.CREATE_COLUMN, dto);
+        return apiServer.post(KANBAN_ROUTES.CREATE_COLUMN, dto);
     },
 
     createTask(dto: CreateTaskDto): Promise<Task> {
-        return api.post(KANBAN_ROUTES.CREATE_TASK, dto);
+        return apiServer.post(KANBAN_ROUTES.CREATE_TASK, dto);
     },
 };

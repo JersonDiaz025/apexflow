@@ -6,7 +6,7 @@ import {
     MoveTaskPayload,
     TaskMovedServerPayload,
 } from '@/interfaces/kanban.interface';
-import { createBoardSocket } from '@/services/socket.service';
+import { createBoardSocket } from '@/services/socket/socket.service';
 import { applyTaskMovement } from '@/utils/board-updater';
 
 export const useKanbanStore = create<KanbanState>((set, get) => ({
