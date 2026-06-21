@@ -3,7 +3,7 @@ import Title from '@/components/shared/Title';
 import AuthLayout from '@/layouts/AuthLayout';
 import { registerAction } from '@/actions/auth/register-action';
 import { ROUTES } from '@/constants/routes.constant';
-import FormContent from '@/features/auth/FormContent';
+import FormContent from '@/features/auth/components/FormContent';
 
 export default function RegisterPage() {
     const commonTexts = data.common;

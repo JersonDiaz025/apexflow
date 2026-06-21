@@ -8,7 +8,7 @@ export async function createSession(token: string) {
 
     (await cookies()).set(SESSION_COOKIE_NAME, token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         expires: expiresAt,
         sameSite: 'lax',
         path: '/',
@@ -19,13 +19,12 @@ export async function deleteSession() {
     (await cookies()).delete(SESSION_COOKIE_NAME);
 }
 
-// NUEVO: Recupera el token crudo de forma centralizada
 export async function getSessionToken(): Promise<string | undefined> {
     const cookieStore = await cookies();
-    return cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    return token;
 }
 
-// NUEVO: Retorna el objeto de cabecera listo para Axios/Fetch
 export async function getAuthHeaders() {
     const token = await getSessionToken();
     return token ? { Authorization: `Bearer ${token}` } : {};

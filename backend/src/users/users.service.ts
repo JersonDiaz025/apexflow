@@ -13,13 +13,13 @@ export class UsersService {
   async create(data: CreateUserDto) {
     const exists = await this.findOneByEmail(data.email);
     if (exists) {
-      throw new ConflictException('El correo ya está registrado');
+      throw new ConflictException('El correo ya existe en el sistema.');
     }
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(data.password, salt);
 
-    return this.prisma.user.create({
+    const user = this.prisma.user.create({
       data: {
         email: data.email,
         name: data.name,
@@ -27,6 +27,10 @@ export class UsersService {
       },
       select: userSelect,
     });
+    return {
+      success: true,
+      message: `¡Bienvenido, ${user.name}! Tu cuenta en ApexFlow ha sido creada con éxito.`,
+    };
   }
 
   // Find user by email
@@ -39,7 +43,7 @@ export class UsersService {
   // Find user by id
   async findById(id: string) {
     return this.prisma.user.findUnique({
-      where: { id },
+      where: { id: id },
       select: userSelect,
     });
   }

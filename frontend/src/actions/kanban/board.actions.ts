@@ -1,6 +1,6 @@
 'use server';
 
-import { boardService } from '@/services/kanban/kanban.service';
+import { boardService } from '@/services/board/board.service';
 import { CreateTaskDto, CreateBoardDto } from '@/interfaces/kanban.interface';
 
 export async function getBoardsAction() {

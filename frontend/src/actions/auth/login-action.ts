@@ -1,22 +1,22 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { ApiError } from '@/types/auth.types';
 import { FormState } from '@/types/form.types';
-import { createSession } from '@/utils/session.lib';
 import { ROUTES } from '@/constants/routes.constant';
-import { INITIAL_FORM_STATE, authSchema } from '@/schemas/auth.schema';
-import { authService } from '@/services/auth/auth.service';
+import { createSession } from '@/utils/session.lib';
+import { handleActionError } from '@/utils/error-handler';
+import { authService } from '@/features/auth/services/auth.service';
+import { authSchema, INITIAL_FORM_STATE } from '@/schemas/auth.schema';
 
 export async function loginAction(prevState: FormState, formData: FormData): Promise<FormState> {
-    let successData = false;
     const data = Object.fromEntries(formData);
+    const currentFields = data as Record<string, string>;
     const result = authSchema.safeParse(data);
 
     if (!result.success) {
         return {
             ...INITIAL_FORM_STATE,
-            data: data as Record<string, string>,
+            data: currentFields,
             errors: result.error.flatten().fieldErrors,
         };
     }
@@ -24,19 +24,8 @@ export async function loginAction(prevState: FormState, formData: FormData): Pro
     try {
         const res = await authService.login(result.data);
         await createSession(res.token);
-        successData = true;
     } catch (error) {
-        const apiError = error as ApiError;
-        return {
-            ...INITIAL_FORM_STATE,
-            data: data as Record<string, string>,
-            message: apiError.message as string,
-        };
+        return handleActionError(error, currentFields);
     }
-
-    if (successData) {
-        redirect(ROUTES.BOARDS);
-    }
-
-    return INITIAL_FORM_STATE;
+    redirect(ROUTES.BOARDS);
 }

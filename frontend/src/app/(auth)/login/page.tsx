@@ -3,7 +3,7 @@ import { loginAction } from '@/actions/auth/login-action';
 import AuthLayout from '@/layouts/AuthLayout';
 import Title from '@/components/shared/Title';
 import { ROUTES } from '@/constants/routes.constant';
-import FormContent from '@/features/auth/FormContent';
+import FormContent from '@/features/auth/components/FormContent';
 
 export default function LoginPage() {
     const commonTexts = data.common;

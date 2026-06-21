@@ -1,13 +1,15 @@
-import { api } from '@/axios/api-client';
 import { User } from '@/types/auth.types';
-import { ROUTES } from '@/constants/routes.constant';
+import { apiServer } from '@/axios/api-server';
+import { API_ENDPOINTS } from '@/constants/routes.constant';
+import { handleActionError } from '@/utils/error-handler';
 
 export const profileService = {
-    getFullProfile: async (): Promise<User | undefined> => {
+    getProfile: async (): Promise<User | undefined> => {
         try {
-            return await api.get(ROUTES.PROFILE, {});
+            return await apiServer.get(API_ENDPOINTS.AUTH.PROFILE);
         } catch (error) {
-            console.log(error);
+            handleActionError(error, {})
+            // console.log(error);
         }
     },
 };

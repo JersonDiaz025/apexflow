@@ -1,6 +1,9 @@
+import { BoardsPage } from '@/features/boards';
+import { getBoardsAction } from '@/actions/kanban/board.actions';
 
-const Page = () => {
-    return <div>page boards</div>;
-};
+export default async function Page() {
+    const data = await getBoardsAction();
+    console.log(data);
 
-export default Page;
+    return <BoardsPage data={data} />;
+}

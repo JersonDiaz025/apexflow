@@ -1,16 +1,16 @@
 export interface NestErrorResponse {
-  message: string | string[];
-  error: string;
-  statusCode: number;
-  status?: string;
+    message: string | string[];
+    error: string;
+    errors?: Record<string, string[]>;
+    statusCode: number;
 }
 
 export interface DataResponse {
-  data: NestErrorResponse;
+    data: NestErrorResponse;
 }
 
 export interface ApiError {
-  message: string;
-  errors?: string[];
-  response?: DataResponse;
+    message: string;
+    errors?: string[];
+    response?: DataResponse;
 }

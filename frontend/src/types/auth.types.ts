@@ -30,7 +30,9 @@ export interface User {
 
 export interface AuthResponse {
     token: string;
-    user: User;
+    success?: boolean;
+    message?: string;
+    user?: User;
 }
 
 // ========================

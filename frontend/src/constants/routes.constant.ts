@@ -1,4 +1,4 @@
-type RouteString = `/${string}`;
+export type RouteString = `/${string}`;
 
 // Base API Prefix para el backend
 const AUTH_API_PREFIX = '/auth';

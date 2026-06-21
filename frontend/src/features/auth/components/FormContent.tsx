@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/shared/Button';
 import { useActionState } from 'react';
+import { Button } from '@/components/shared/Button';
 import { ErrorLabel } from '@/components/shared/ErrorLabel';
 import { FormField } from '@/components/shared/FormField';
 import { INITIAL_FORM_STATE } from '@/schemas/auth.schema';
@@ -26,14 +26,6 @@ export default function FormContent<T extends BaseFormTexts>({
                         defaultValue={state?.data?.name ?? ''}
                         errorLabel={state?.errors?.name?.[0]}
                         placeholder={texts.namePlaceholder}
-                    />
-                    <FormField
-                        type={FORM_TYPES.TEXT}
-                        name={FORM_TYPES.USERNAME}
-                        defaultValue={state?.data?.username}
-                        label={texts?.usernameLabel ?? ''}
-                        errorLabel={state?.errors?.username?.[0]}
-                        placeholder={texts.usernamePlaceholder}
                     />
                 </>
             )}

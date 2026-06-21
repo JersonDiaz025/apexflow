@@ -1,13 +1,18 @@
-import { PROTECTED_PREFIXES, PUBLIC_ROUTES, ROUTES } from '@/constants/routes.constant';
+import {
+    PROTECTED_PREFIXES,
+    PUBLIC_ROUTES,
+    ROUTES,
+    RouteString,
+} from '@/constants/routes.constant';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { SESSION_COOKIE_NAME } from '@/constants/session.constants';
+import { getSessionToken } from '@/utils/session.lib';
 
-export function proxy(req: NextRequest) {
+export async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;
-    const token = req.cookies.get(SESSION_COOKIE_NAME)?.value;
+    const token = await getSessionToken();
 
-    const isAuthRoute = PUBLIC_ROUTES.includes(pathname);
+    const isAuthRoute = PUBLIC_ROUTES.includes(pathname as RouteString);
     const isProtectedRoute = PROTECTED_PREFIXES.some((route) => pathname.startsWith(route));
 
     if (isProtectedRoute && !token) {

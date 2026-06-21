@@ -12,20 +12,13 @@ export type BaseFormTexts = {
     loadingButton: string;
 };
 
-export type RegisterFormTexts = BaseFormTexts & {
-    confirmPasswordLabel: string;
-    confirmPasswordPlaceholder: string;
-};
-
 export type LoginFormTexts = BaseFormTexts;
 
 export type FormState = {
     errors?: {
         email?: string[];
         name?: string[];
-        username?: string[];
         password?: string[];
-        confirmPassword?: string[];
     };
     message?: string;
     success?: boolean;

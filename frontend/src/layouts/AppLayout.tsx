@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import SideNavbar from '@/components/navbar/SideNavbar';
 import TopNavbar from '@/components/navbar/TopNavbar';
 import BottomNavbar from '@/components/navbar/BottomNavbar';
 
@@ -10,11 +9,6 @@ interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
     return (
         <div className='flex h-screen bg-surface overflow-hidden w-full'>
-            {/* Solo visible de Tablet (md) en adelante */}
-            <div className='hidden md:block h-full'>
-                <SideNavbar />
-            </div>
-
             <div className='flex-1 flex flex-col min-w-0 h-full relative pb-16 md:pb-0'>
                 <TopNavbar />
 
