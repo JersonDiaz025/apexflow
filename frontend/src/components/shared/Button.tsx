@@ -1,6 +1,6 @@
 import { ButtonProps } from '@/types/btn.types';
 
-export const Button = ({
+const Button = ({
     children,
     label,
     icon: Icon,
@@ -28,3 +28,5 @@ export const Button = ({
         </button>
     );
 };
+
+export default Button;

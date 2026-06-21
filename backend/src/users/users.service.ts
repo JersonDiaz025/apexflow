@@ -4,6 +4,7 @@ import { userSelect } from '@/prisma/user.select';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { Injectable, ConflictException } from '@nestjs/common';
+import { getAvatarInitials } from '@/utils/avatar.util';
 
 @Injectable()
 export class UsersService {
@@ -42,9 +43,15 @@ export class UsersService {
 
   // Find user by id
   async findById(id: string) {
-    return this.prisma.user.findUnique({
+    const dataUser = await this.prisma.user.findUnique({
       where: { id: id },
       select: userSelect,
     });
+    if (!dataUser) return null;
+
+    return {
+      ...dataUser,
+      avatar: getAvatarInitials(dataUser?.name, 2),
+    };
   }
 }

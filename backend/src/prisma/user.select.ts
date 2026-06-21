@@ -3,4 +3,5 @@ export const userSelect = {
   email: true,
   name: true,
   createdAt: true,
+  updatedAt: true,
 } as const;

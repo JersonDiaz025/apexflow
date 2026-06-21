@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { Button } from '@/components/shared/Button';
+import { Button } from '@/components';
 import { ErrorLabel } from '@/components/shared/ErrorLabel';
 import { FormField } from '@/components/shared/FormField';
 import { INITIAL_FORM_STATE } from '@/schemas/auth.schema';

@@ -1,72 +1,80 @@
+'use client';
+import { useAuthStore } from '@/store/auth.store';
 // import Image from 'next/image';
-import { Search, Bell, Settings, UserPlus, History } from 'lucide-react';
+import { Bell, Settings, History } from 'lucide-react';
+import { MemberGroup, SearchInput, UserDropdown, Title } from '@/components';
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes.constant';
 
 interface TopNavbarProps {
     title?: string;
+    showSearch?: boolean;
+    showMembers?: boolean;
+    searchPlaceholder?: string;
+    searchValue?: string;
+    onSearchChange?: (value: string) => void;
+    members?: Array<{ id: string; name: string; avatar?: string }>;
+    onAddMemberClick?: () => void;
 }
 
-const TopNavbar = ({ title = 'Product Roadmap' }: TopNavbarProps) => {
+const TopNavbar = ({
+    title = 'ApexFlow',
+    showSearch = true,
+    showMembers = false,
+    searchPlaceholder = 'Buscar...',
+    searchValue,
+    onSearchChange,
+    members,
+    onAddMemberClick,
+}: TopNavbarProps) => {
+    const { user } = useAuthStore();
+    console.log(user);
     return (
-        <header className='h-16 border-b border-outline-variant bg-white/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 w-full'>
-            {/* Lado Izquierdo: Título y Miembros */}
-            <div className='flex items-center gap-3 md:gap-6 min-w-0'>
+        <header className='h-16 border-b border-outline-variant bg-white/85 backdrop-blur-md flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 w-full select-none'>
+            {/* Lado Izquierdo: Título, Historial y Miembros */}
+            <div className='flex items-center gap-4 md:gap-6 min-w-0'>
                 <div className='flex items-center gap-2 min-w-0'>
-                    <h1 className='text-lg md:text-xl font-bold text-on-surface truncate'>
-                        {title}
-                    </h1>
-                    <button className='text-on-surface-variant hover:text-primary transition-colors flex-shrink-0'>
-                        <History size={18} />
-                    </button>
+                    <Link href={ROUTES.BOARDS}>
+                        <Title
+                            text={title}
+                            className='text-base md:text-lg font-bold text-on-surface truncate'
+                        />
+                    </Link>
                 </div>
 
-                {/* Oculto en mobile, visible de tablet en adelante */}
-                <div className='hidden md:flex items-center gap-4'>
-                    <div className='flex -space-x-2'>
-                        {[1, 2, 3].map((i) => (
-                            <div
-                                key={i}
-                                className='w-8 h-8 rounded-full bg-surface-container-high border-2 border-white flex-shrink-0'
-                            />
-                        ))}
-                        <div className='w-8 h-8 rounded-full bg-surface-container-high border-2 border-white flex items-center justify-center text-xs font-bold text-on-surface-variant flex-shrink-0'>
-                            +4
-                        </div>
-                    </div>
-
-                    <button className='text-on-surface-variant hover:text-primary transition-colors'>
-                        <UserPlus size={20} />
-                    </button>
-                </div>
+                {/* Renderizado condicional controlado por propiedad */}
+                {showMembers && (
+                    <MemberGroup members={members} onAddMemberClick={onAddMemberClick} />
+                )}
             </div>
 
-            {/* Lado Derecho: Acciones y Perfil */}
-            <div className='flex items-center gap-2 md:gap-4'>
-                {/* Buscador: Solo visible en pantallas medianas/grandes */}
-                <div className='relative hidden md:block'>
-                    <Search
-                        size={18}
-                        className='absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant'
+            {/* Lado Derecho: Buscador, Notificaciones, Ajustes y Perfil */}
+            <div className='flex items-center gap-1 md:gap-3'>
+                {/* Buscador Condicional */}
+                {showSearch && (
+                    <SearchInput
+                        placeholder={searchPlaceholder}
+                        value={searchValue}
+                        onChange={onSearchChange}
                     />
-                    <input
-                        type='text'
-                        placeholder='Search roadmap...'
-                        className='pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-precision focus:outline-none focus:ring-2 focus:ring-primary/20 w-64'
-                    />
-                </div>
+                )}
 
-                {/* Notificaciones (Siempre visible) */}
+                {/* Notificaciones */}
                 <button className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative'>
-                    <Bell size={20} />
+                    <Bell size={19} />
                     <span className='absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white' />
                 </button>
 
-                {/* Ajustes (Visible también en mobile según tu captura) */}
+                {/* Ajustes */}
                 <button className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors'>
-                    <Settings size={20} />
+                    <Settings size={19} />
                 </button>
 
-                {/* Avatar de Usuario (Siempre visible) */}
-                <div className='w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex-shrink-0' />
+                {/* Separador sutil */}
+                <div className='h-6 w-[1px] bg-outline-variant/60 mx-1 hidden sm:block' />
+
+                {/* Menú de Usuario con Zustand e Iniciales */}
+                <UserDropdown />
             </div>
         </header>
     );
