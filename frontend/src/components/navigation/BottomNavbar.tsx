@@ -1,7 +1,9 @@
-import { Home, KanbanSquare, Users, User, Plus } from 'lucide-react';
-import { Button, AddButton } from '@/components';
+import { AddButton } from '@/components';
+import { Home, KanbanSquare, Users, User } from 'lucide-react';
+import { MODAL_TYPES } from '@/constants/modal-types.constants';
+import { BottonNavbarProps } from '@/interfaces/navbar.interface';
 
-const BottomNavbar = () => {
+const BottomNavbar = ({ handleOpenModal }: BottonNavbarProps) => {
     const navItems = [
         { icon: Home, label: 'Home', active: false },
         { icon: KanbanSquare, label: 'Board', active: true },
@@ -15,10 +17,11 @@ const BottomNavbar = () => {
             {navItems.map((item, idx) => {
                 if (item.label === 'FAB_PLACEHOLDER') {
                     return (
-                        /* Botón central "+" flotante */
-                        <div key={`fab-${idx}`} className='relative -top-5 z-50'>
-                            {/* Si no le pasas la prop icon, usará Plus automáticamente */}
-                            <AddButton size={14} iconSize={26} onClick={() => {}} />
+                        <div key={idx} className='relative -top-5 z-50'>
+                            <AddButton
+                                onClick={() => handleOpenModal(MODAL_TYPES.CREATE_BOARD)}
+                                iconSize={24}
+                            />
                         </div>
                     );
                 }
@@ -26,16 +29,22 @@ const BottomNavbar = () => {
                 const Icon = item.icon;
 
                 return (
-                    <Button
+                    <button
                         key={item.label}
                         className={`flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
                             item.active ? 'text-primary' : 'text-on-surface-variant'
                         }`}
-                        icon={Icon}
-                        iconSize={20}
-                        size={10}
-                        label={item.label}
-                    />
+                    >
+                        {Icon && (
+                            <Icon
+                                size={20}
+                                className={item.active ? 'stroke-[2.5px]' : 'stroke-[2px]'}
+                            />
+                        )}
+                        <span className='text-[10px] mt-1 font-medium tracking-tight'>
+                            {item.label}
+                        </span>
+                    </button>
                 );
             })}
         </div>

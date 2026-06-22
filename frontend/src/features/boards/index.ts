@@ -1,7 +1,7 @@
 // Components
 export { default as BoardCard } from '@/features/boards/components/BoardCard';
 export { default as BoardFilter } from '@/features/boards/components/BoardFilter';
-export { default as CreateBoardModal } from '@/features/boards/components/CreateBoardModal';
+export { default as CreateBoardModal } from '@/features/boards/components/CreateBoardForm';
 
 // Hooks
 export {};

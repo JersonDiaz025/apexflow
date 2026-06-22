@@ -64,6 +64,7 @@ export interface TaskMovedServerPayload {
 
 export interface CreateBoardDto {
     title: string;
+    description?: string;
 }
 
 export interface CreateColumnDto {

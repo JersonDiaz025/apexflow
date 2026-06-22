@@ -16,6 +16,7 @@ export const ROUTES = {
     BOARDS: '/boards' as RouteString,
     BOARD_DETAIL: (id: string): RouteString => `/board/${id}`, // El Kanban interno
     PROFILE: '/profile' as RouteString,
+    CONFIG: '/config',
 } as const;
 
 /**

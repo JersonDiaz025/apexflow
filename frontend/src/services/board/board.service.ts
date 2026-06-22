@@ -20,9 +20,7 @@ export const boardService: IBoardService = {
     },
 
     createBoard(dto: CreateBoardDto): Promise<Board> {
-        return apiServer.post(API_ENDPOINTS.KANBAN.CREATE_BOARD, {
-            dto,
-        });
+        return apiServer.post(API_ENDPOINTS.KANBAN.CREATE_BOARD, dto);
     },
 
     createColumn(dto: CreateColumnDto): Promise<Column> {

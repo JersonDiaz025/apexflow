@@ -1,22 +1,12 @@
 'use client';
-import { useAuthStore } from '@/store/auth.store';
-// import Image from 'next/image';
-import { Bell, Settings, History } from 'lucide-react';
-import { MemberGroup, SearchInput, UserDropdown, Title } from '@/components';
-import Link from 'next/link';
-import { ROUTES } from '@/constants/routes.constant';
 
-interface TopNavbarProps {
-    title?: string;
-    showSearch?: boolean;
-    showMembers?: boolean;
-    searchPlaceholder?: string;
-    showNotifications?: boolean;
-    searchValue?: string;
-    onSearchChange?: (value: string) => void;
-    members?: Array<{ id: string; name: string; avatar?: string }>;
-    onAddMemberClick?: () => void;
-}
+import Link from 'next/link';
+import { Bell, Settings } from 'lucide-react';
+import { useAuthStore } from '@/store/auth.store';
+import { ROUTES } from '@/constants/routes.constant';
+import { TopNavbarProps } from '@/interfaces/navbar.interface';
+import { MODAL_TYPES } from '@/constants/modal-types.constants';
+import { MemberGroup, SearchInput, UserDropdown, Title, AddButton } from '@/components';
 
 const TopNavbar = ({
     title = 'ApexFlow',
@@ -24,16 +14,16 @@ const TopNavbar = ({
     showMembers = false,
     searchPlaceholder = 'Buscar...',
     searchValue,
+    showBtnAdd = false,
     showNotifications = false,
     onSearchChange,
+    handleOpenModal,
     members,
     onAddMemberClick,
 }: TopNavbarProps) => {
-    const { user } = useAuthStore();
-    console.log(user);
+    // const { user } = useAuthStore();
     return (
         <header className='h-16 border-b border-outline-variant bg-white/85 backdrop-blur-md flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 w-full select-none'>
-            {/* Lado Izquierdo: Título, Historial y Miembros */}
             <div className='flex items-center gap-4 md:gap-6 min-w-0'>
                 <div className='flex items-center gap-2 min-w-0'>
                     <Link href={ROUTES.BOARDS}>
@@ -44,15 +34,12 @@ const TopNavbar = ({
                     </Link>
                 </div>
 
-                {/* Renderizado condicional controlado por propiedad */}
                 {showMembers && (
                     <MemberGroup members={members} onAddMemberClick={onAddMemberClick} />
                 )}
             </div>
 
-            {/* Lado Derecho: Buscador, Notificaciones, Ajustes y Perfil */}
             <div className='flex items-center gap-1 md:gap-3'>
-                {/* Buscador Condicional */}
                 {showSearch && (
                     <SearchInput
                         placeholder={searchPlaceholder}
@@ -61,7 +48,16 @@ const TopNavbar = ({
                     />
                 )}
 
-                {/* Notificaciones */}
+                {showBtnAdd && (
+                    <AddButton
+                        type='submit'
+                        iconSize={18}
+                        className='hidden md:flex'
+                        onClick={() => handleOpenModal(MODAL_TYPES.CREATE_BOARD)}
+                    >
+                        Crear tablero
+                    </AddButton>
+                )}
 
                 {showNotifications && (
                     <button className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative'>
@@ -70,15 +66,14 @@ const TopNavbar = ({
                     </button>
                 )}
 
-                {/* Ajustes */}
-                <button className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors'>
+                <Link
+                    className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors'
+                    href={ROUTES.CONFIG}
+                >
                     <Settings size={19} />
-                </button>
+                </Link>
 
-                {/* Separador sutil */}
                 <div className='h-6 w-[1px] bg-outline-variant/60 mx-1 hidden sm:block' />
-
-                {/* Menú de Usuario con Zustand e Iniciales */}
                 <UserDropdown />
             </div>
         </header>
