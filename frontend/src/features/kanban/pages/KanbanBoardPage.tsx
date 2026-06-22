@@ -4,7 +4,7 @@ import LayoutPages from '@/layouts/LayoutPages';
 import { useBreadcrumb } from '@/hooks/use-breadcrumb';
 
 const KanbanBoardPage = ({ board }) => {
-    console.log('Boards list', board);
+    console.log('Boards detail', board);
     const boardName = 'Sprint 3 - Core API';
     const breadcrumbItems = useBreadcrumb();
 
