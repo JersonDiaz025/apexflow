@@ -12,12 +12,11 @@ export default function LoginPage() {
 
     return (
         <AuthLayout
-            title={title}
             footerHref={ROUTES.REGISTER}
             footerActionText={footerActionText}
             footerLinkText={alreadyHaveAccount}
         >
-            <Title as='h1' className='text-3xl font-extrabold tracking-tighter text-center mb-8'>
+            <Title as='h1' className='text-3xl font-extrabold tracking-tighte mb-8'>
                 {title}
             </Title>
             <FormContent

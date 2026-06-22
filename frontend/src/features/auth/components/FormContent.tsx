@@ -54,6 +54,7 @@ export default function FormContent<T extends BaseFormTexts>({
                     type='submit'
                     disabled={pending}
                     label={pending ? texts.loadingButton : texts.submitButton}
+                    className='w-full h-12 bg-indigo-600 text-white rounded-xl font-medium shadow-sm hover:bg-indigo-700 transition-all duration-150 active:scale-[0.98]'
                 />
             </div>
         </form>

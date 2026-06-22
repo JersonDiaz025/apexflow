@@ -1,13 +1,16 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { CreateBoardInput, createBoardSchema } from '@/schemas/board.schema';
-import { handleActionError } from '@/utils/error-handler'; // Úsalo si ya formatea tu BoardFormState
-import { boardService } from '@/services/board/board.service';
-import { CreateTaskDto } from '@/interfaces/kanban.interface';
 import { BoardFormState } from '@/types/board.types';
 import { ROUTES } from '@/constants/routes.constant';
-import { FORM_TYPES } from '@/constants/form-types.constants';
+import { handleActionError } from '@/utils/error-handler';
+import { boardService } from '@/services/board/board.service';
+import { CreateTaskDto } from '@/interfaces/kanban.interface';
+import {
+    CreateBoardInput,
+    createBoardSchema,
+    INITIAL_BOARD_FORM_STATE,
+} from '@/schemas/board.schema';
 
 export async function getBoardsAction() {
     return await boardService.getBoards();
@@ -17,17 +20,16 @@ export async function createBoardAction(
     prevState: BoardFormState,
     formData: FormData
 ): Promise<BoardFormState> {
-    const title = formData.get(FORM_TYPES.TITLE) as string;
-    const description = formData.get(FORM_TYPES.DESCRIPTION) as string;
-    const currentData = { title, description };
-    const validatedFields = createBoardSchema.safeParse(currentData);
+    const data = Object.fromEntries(formData);
+    const currentFields = data as Record<string, string>;
+    const validatedFields = createBoardSchema.safeParse(data);
 
     if (!validatedFields.success) {
         return {
+            ...INITIAL_BOARD_FORM_STATE,
             success: false,
-            message: 'Revisa los campos del formulario.',
             errors: validatedFields.error.flatten().fieldErrors,
-            data: currentData,
+            data: currentFields,
         };
     }
 
@@ -36,12 +38,12 @@ export async function createBoardAction(
         await boardService.createBoard(dto);
         revalidatePath(ROUTES.BOARDS);
         return {
+            ...INITIAL_BOARD_FORM_STATE,
             success: true,
             message: '¡Tablero creado con éxito! ',
-            data: { title: '', description: '' },
         };
     } catch (error) {
-        return handleActionError<CreateBoardInput>(error, currentData);
+        return handleActionError<CreateBoardInput>(error, currentFields);
     }
 }
 

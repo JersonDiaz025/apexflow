@@ -8,8 +8,8 @@ import BoardCard from '@/features/boards/components/BoardCard';
 import { BoardsPageProps } from '@/features/boards/interfaces/board.interfaces';
 
 const BoardsPage = ({ data }: BoardsPageProps) => {
-    // console.log('Boards list', data);
-    const breadcrumbItems = useBreadcrumb([{ label: 'Mis tableros', href: ROUTES.BOARDS }]);
+    const items = [{ label: 'Mis tableros', href: ROUTES.BOARDS }];
+    const breadcrumbItems = useBreadcrumb(items);
 
     return (
         <LayoutPages

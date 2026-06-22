@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useBoard } from '@/hooks/useBoard';
 import { Board } from '@/interfaces/kanban.interface';
 import ActivitySidebar from '@/components/navbar/ActivitySidebar';
 import { Calendar, MoreHorizontal, Plus, UserPlus, X } from 'lucide-react';
 
 interface Props {
-    initialBoard: Board;
+    boardData: Board;
 }
 
 const MOCK_COLUMNS = [
@@ -15,17 +14,39 @@ const MOCK_COLUMNS = [
         id: 'col-1',
         title: 'BACKLOG',
         tasks: [
-            { id: 'task-1', title: 'Auth Module Refactor', description: 'Clean up legacy authentication flow and implement JWT encryption standards.', category: 'FEATURE', categoryColor: 'bg-indigo-50 text-indigo-600', date: 'OCT 12' },
-            { id: 'task-2', title: 'API Rate Limiting', description: 'Infrastructure task to prevent DDoS attacks on public endpoints.', category: 'HIGH PRIORITY', categoryColor: 'bg-red-50 text-red-500 font-bold', date: 'OCT 14' }
-        ]
+            {
+                id: 'task-1',
+                title: 'Auth Module Refactor',
+                description:
+                    'Clean up legacy authentication flow and implement JWT encryption standards.',
+                category: 'FEATURE',
+                categoryColor: 'bg-indigo-50 text-indigo-600',
+                date: 'OCT 12',
+            },
+            {
+                id: 'task-2',
+                title: 'API Rate Limiting',
+                description: 'Infrastructure task to prevent DDoS attacks on public endpoints.',
+                category: 'HIGH PRIORITY',
+                categoryColor: 'bg-red-50 text-red-500 font-bold',
+                date: 'OCT 14',
+            },
+        ],
     },
     {
         id: 'col-2',
         title: 'IN PROGRESS',
         tasks: [
-            { id: 'task-3', title: 'Stripe Connect Sync', description: 'Align webhooks handling with the multi-tenant subscription flow.', category: 'INTEGRATION', categoryColor: 'bg-blue-50 text-blue-600', date: 'OCT 16' }
-        ]
-    }
+            {
+                id: 'task-3',
+                title: 'Stripe Connect Sync',
+                description: 'Align webhooks handling with the multi-tenant subscription flow.',
+                category: 'INTEGRATION',
+                categoryColor: 'bg-blue-50 text-blue-600',
+                date: 'OCT 16',
+            },
+        ],
+    },
 ];
 
 // Mock de miembros actuales del tablero para el diseño
@@ -35,9 +56,7 @@ const MOCK_MEMBERS = [
     { id: 'u3', name: 'Jhan Pierre', initial: 'P', bg: 'bg-emerald-500' },
 ];
 
-export default function KanbanBoard({ initialBoard }: Props) {
-    const board = useBoard(initialBoard);
-
+export default function MainKanban({ boardData }: Props) {
     // Estados de la UI
     const [isActivityOpen, setIsActivityOpen] = useState(false);
     const [isInviteOpen, setIsInviteOpen] = useState(false);
@@ -48,15 +67,15 @@ export default function KanbanBoard({ initialBoard }: Props) {
     const [members, setMembers] = useState(MOCK_MEMBERS);
 
     useEffect(() => {
-        if (board && board.columns && board.columns.length > 0) {
-            const formattedColumns = board.columns.map(col => ({
+        if (boardData && boardData.columns && boardData.columns.length > 0) {
+            const formattedColumns = boardData.columns.map((col) => ({
                 id: col.id,
                 title: col.title.toUpperCase(),
-                tasks: col.tasks || []
+                tasks: col.tasks || [],
             }));
             setDisplayColumns(formattedColumns);
         }
-    }, [board]);
+    }, [boardData]);
 
     // Manejador del envío de la invitación
     const handleSendInvite = (e: React.FormEvent) => {
@@ -68,7 +87,15 @@ export default function KanbanBoard({ initialBoard }: Props) {
 
         // Simulación visual añadiendo un miembro pendiente
         const newInitial = inviteEmail.charAt(0).toUpperCase();
-        setMembers([...members, { id: Date.now().toString(), name: inviteEmail, initial: newInitial, bg: 'bg-slate-400 animate-pulse' }]);
+        setMembers([
+            ...members,
+            {
+                id: Date.now().toString(),
+                name: inviteEmail,
+                initial: newInitial,
+                bg: 'bg-slate-400 animate-pulse',
+            },
+        ]);
 
         // Reset y cerrar
         setInviteEmail('');
@@ -79,12 +106,11 @@ export default function KanbanBoard({ initialBoard }: Props) {
         <div className='flex h-full w-full overflow-hidden relative'>
             {/* Área Principal del Kanban */}
             <div className='flex-1 flex flex-col min-w-0 h-full'>
-
                 {/* BARRA SUPERIOR ADAPTADA CON MIEMBROS E INVITACIÓN */}
                 <div className='mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 flex-shrink-0'>
                     <div>
                         <h2 className='text-xl font-bold text-on-surface'>
-                            {board?.title || 'Project Board (Preview)'}
+                            {boardData?.title || 'Project Board (Preview)'}
                         </h2>
                     </div>
 
@@ -127,32 +153,62 @@ export default function KanbanBoard({ initialBoard }: Props) {
                 {/* CONTENEDOR DE COLUMNAS (Mantiene tu scroll horizontal impecable) */}
                 <div className='flex-1 flex gap-5 overflow-x-auto pb-4 snap-x scrollbar-thin select-none w-full items-start scroll-smooth'>
                     {displayColumns.map((column) => (
-                        <div key={column.id} className='w-[330px] min-w-[290px] md:w-[350px] md:min-w-[340px] flex flex-col max-h-full flex-shrink-0'>
+                        <div
+                            key={column.id}
+                            className='w-[330px] min-w-[290px] md:w-[350px] md:min-w-[340px] flex flex-col max-h-full flex-shrink-0'
+                        >
                             {/* Header de columna */}
                             <div className='flex items-center justify-between mb-4 px-1 flex-shrink-0'>
                                 <div className='flex items-center gap-2 font-mono tracking-wider text-xs font-bold text-on-surface-variant uppercase'>
                                     <h3>{column.title}</h3>
-                                    <span className='bg-blue-100 text-blue-600 text-[11px] px-2 py-0.5 rounded font-bold'>{column.tasks?.length || 0}</span>
+                                    <span className='bg-blue-100 text-blue-600 text-[11px] px-2 py-0.5 rounded font-bold'>
+                                        {column.tasks?.length || 0}
+                                    </span>
                                 </div>
-                                <button className='text-on-surface-variant hover:text-on-surface p-1 transition-colors'><MoreHorizontal size={18} /></button>
+                                <button className='text-on-surface-variant hover:text-on-surface p-1 transition-colors'>
+                                    <MoreHorizontal size={18} />
+                                </button>
                             </div>
 
                             {/* Listado de Tarjetas */}
                             <div className='flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-thin max-h-[calc(100vh-240px)]'>
                                 {column.tasks?.map((task: any) => (
-                                    <div key={task.id} className='bg-white border border-slate-100 rounded-xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col gap-3'>
-                                        <div><span className={`text-[10px] font-bold tracking-wide px-2.5 py-1 rounded ${task.categoryColor || 'bg-purple-50 text-purple-600'}`}>{task.category || 'TASK'}</span></div>
+                                    <div
+                                        key={task.id}
+                                        className='bg-white border border-slate-100 rounded-xl p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex flex-col gap-3'
+                                    >
                                         <div>
-                                            <h4 className='font-bold text-on-surface text-sm md:text-base leading-tight tracking-tight'>{task.title}</h4>
-                                            {task.description && <p className='text-xs md:text-sm text-on-surface-variant mt-1.5 leading-relaxed line-clamp-2'>{task.description}</p>}
+                                            <span
+                                                className={`text-[10px] font-bold tracking-wide px-2.5 py-1 rounded ${task.categoryColor || 'bg-purple-50 text-purple-600'}`}
+                                            >
+                                                {task.category || 'TASK'}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h4 className='font-bold text-on-surface text-sm md:text-base leading-tight tracking-tight'>
+                                                {task.title}
+                                            </h4>
+                                            {task.description && (
+                                                <p className='text-xs md:text-sm text-on-surface-variant mt-1.5 leading-relaxed line-clamp-2'>
+                                                    {task.description}
+                                                </p>
+                                            )}
                                         </div>
                                         <div className='flex items-center justify-between pt-2 mt-1 border-t border-slate-50 text-on-surface-variant/60 text-[11px] font-mono'>
-                                            <div className='flex items-center gap-1.5'><Calendar size={13} /><span>{task.date || 'OCT 12'}</span></div>
-                                            <div className='w-6 h-6 rounded-full bg-surface-container-high border border-white flex items-center justify-center font-bold text-[10px] text-on-surface-variant'>U</div>
+                                            <div className='flex items-center gap-1.5'>
+                                                <Calendar size={13} />
+                                                <span>{task.date || 'OCT 12'}</span>
+                                            </div>
+                                            <div className='w-6 h-6 rounded-full bg-surface-container-high border border-white flex items-center justify-center font-bold text-[10px] text-on-surface-variant'>
+                                                U
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
-                                <button className='w-full py-3 bg-white/40 border border-dashed border-outline-variant rounded-xl text-[11px] font-bold text-on-surface-variant hover:bg-white hover:text-primary hover:border-primary/50 transition-all uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer'><Plus size={14} /><span>Add Card</span></button>
+                                <button className='w-full py-3 bg-white/40 border border-dashed border-outline-variant rounded-xl text-[11px] font-bold text-on-surface-variant hover:bg-white hover:text-primary hover:border-primary/50 transition-all uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer'>
+                                    <Plus size={14} />
+                                    <span>Add Card</span>
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -160,8 +216,17 @@ export default function KanbanBoard({ initialBoard }: Props) {
             </div>
 
             {/* SIDEBAR DE ACTIVIDAD */}
-            <div className={`absolute right-0 top-0 h-full z-40 md:relative md:z-0 transition-all duration-300 bg-white ${isActivityOpen ? 'w-80 border-l border-outline-variant' : 'w-0 overflow-hidden border-l-0'}`}>
-                {isActivityOpen && <button onClick={() => setIsActivityOpen(false)} className='md:hidden absolute right-4 top-4 z-50 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant text-on-surface font-bold text-xs'>✕</button>}
+            <div
+                className={`absolute right-0 top-0 h-full z-40 md:relative md:z-0 transition-all duration-300 bg-white ${isActivityOpen ? 'w-80 border-l border-outline-variant' : 'w-0 overflow-hidden border-l-0'}`}
+            >
+                {isActivityOpen && (
+                    <button
+                        onClick={() => setIsActivityOpen(false)}
+                        className='md:hidden absolute right-4 top-4 z-50 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant text-on-surface font-bold text-xs'
+                    >
+                        ✕
+                    </button>
+                )}
                 <ActivitySidebar isOpen={isActivityOpen} />
             </div>
 
@@ -169,7 +234,6 @@ export default function KanbanBoard({ initialBoard }: Props) {
             {isInviteOpen && (
                 <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in'>
                     <div className='bg-white w-full max-w-md p-6 rounded-xl border border-outline-variant shadow-xl mx-4 relative animate-scale-up'>
-
                         {/* Botón Cerrar Modal */}
                         <button
                             onClick={() => setIsInviteOpen(false)}
@@ -185,7 +249,8 @@ export default function KanbanBoard({ initialBoard }: Props) {
                                 Invite to Board
                             </h3>
                             <p className='text-xs text-on-surface-variant mt-1'>
-                                Enter your teammate's email to share this workspace. They must log in to collaborate.
+                                Enter your teammate's email to share this workspace. They must log
+                                in to collaborate.
                             </p>
                         </div>
 

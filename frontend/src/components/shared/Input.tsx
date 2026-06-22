@@ -1,15 +1,17 @@
-import { InputProps } from "@/types/input.types";
+import { cn } from '@/utils/cn';
+import { InputProps } from '@/types/input.types';
 
-export const Input = ( { hasError, className, ...props }: InputProps ) => {
-  return (
-    <input
-      {...props}
-      className={`w-full bg-[#161a1f] h-12 px-4 rounded-md outline-none transition-all
-                  text-[#e0e6f1] placeholder-secondary/40 focus:ring-1 ${ hasError
-          ? "border border-red-500 focus:ring-red-500/20"
-          : "border border-transparent focus:ring-[#b9c7e5]/20"
-        }${ className }`}
-
-    />
-  );
+export const Input = ({ hasError, className, ...props }: InputProps) => {
+    return (
+        <input
+            {...props}
+            className={cn(
+                'w-full h-12 px-4 rounded-md bg-white border border-gray-200 text-gray-900 placeholder-gray-400 outline-none transition-all duration-150',
+                'focus:border-indigo-600 focus:ring-4 focus:ring-indigo-600/10',
+                hasError &&
+                    'border-red-500 focus:border-red-500 focus:ring-red-500/10 bg-red-50/10',
+                className
+            )}
+        />
+    );
 };

@@ -8,17 +8,15 @@ import FormContent from '@/features/auth/components/FormContent';
 export default function RegisterPage() {
     const commonTexts = data.common;
     const registerTexts = data.auth.register;
-
     const { title, footerActionText, alreadyHaveAccount } = registerTexts;
 
     return (
         <AuthLayout
-            title={title}
             footerActionText={footerActionText}
             footerLinkText={alreadyHaveAccount}
             footerHref={ROUTES.LOGIN}
         >
-            <Title as='h1' className='text-3xl font-extrabold tracking-tighter text-center mb-8'>
+            <Title as='h1' className='text-3xl font-extrabold tracking-tighter mb-8'>
                 {title}
             </Title>
             <FormContent

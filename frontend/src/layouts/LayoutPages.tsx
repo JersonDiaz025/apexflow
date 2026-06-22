@@ -29,8 +29,6 @@ export function LayoutPages({ title, subTitle, children, breadcrumbItems }: Layo
                     {subTitle && <Title text={subTitle} className='text-slate-500 text-sm mt-1' />}
                 </div>
             </header>
-
-            {/* Contenedor del contenido de la página */}
             <div className='w-full'>{children}</div>
         </main>
     );

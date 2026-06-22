@@ -1,22 +1,25 @@
 'use client';
 
 import LayoutPages from '@/layouts/LayoutPages';
+import { ROUTES } from '@/constants/routes.constant';
 import { useBreadcrumb } from '@/hooks/use-breadcrumb';
+import { BoardPageProps } from '@/features/kanban/interfaces/board-page.interface';
+import MainKanban from '../components/MainKanban';
 
-const KanbanBoardPage = ({ board }) => {
-    console.log('Boards detail', board);
-    const boardName = 'Sprint 3 - Core API';
-    const breadcrumbItems = useBreadcrumb();
+const KanbanBoardPage = ({ boardData }: BoardPageProps) => {
+    console.log('Boards detail', boardData);
+    const currentTitle = boardData?.title;
+
+    const items = useBreadcrumb([
+        { label: 'Tableros', href: ROUTES.BOARDS },
+        { label: currentTitle },
+    ]);
+
+    const breadcrumbItems = useBreadcrumb(items);
 
     return (
-        <LayoutPages
-            title={boardName}
-            subTitle=''
-            breadcrumbItems={breadcrumbItems}
-        >
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 px-1'>
-                Mostrando detalle
-            </div>
+        <LayoutPages title={boardData.title} subTitle='' breadcrumbItems={breadcrumbItems}>
+            <MainKanban boardData={boardData} />
         </LayoutPages>
     );
 };

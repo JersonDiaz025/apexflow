@@ -3,6 +3,7 @@
 import Title from './Title';
 import { useRef } from 'react';
 import { X } from 'lucide-react';
+import { Button } from '@/components';
 import { ModalProps } from '@/interfaces/modal.interface';
 
 export function Modal({ isOpen, onClose, title, description, children }: ModalProps) {
@@ -17,23 +18,23 @@ export function Modal({ isOpen, onClose, title, description, children }: ModalPr
                 className='fixed inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200'
             />
 
-            <div className='relative w-full max-w-lg bg-white border border-outline-variant rounded-2xl shadow-xl p-6 z-10 animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-200'>
-                <div className='flex items-start justify-between mb-4'>
+            <div className='relative w-full max-w-fit bg-white border border-outline-variant rounded-2xl shadow-xl p-12 z-10 animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-200'>
+                <div className='flex items-start justify-between mb-8'>
                     <div>
                         <Title
                             text={title}
                             className='text-xl font-bold text-gray-900 tracking-tight'
                         />
                         {description && (
-                            <Title text={description} className='text-sm text-gray-500 mt-1' />
+                            <Title text={description} className='text-sm text-gray-500 mt-4' />
                         )}
                     </div>
-                    <button
+                    <Button
                         onClick={onClose}
-                        className='p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors'
+                        className='rounded-lg text-gray-900 transition-colors'
                     >
-                        <X size={18} />
-                    </button>
+                        <X size={24} className='text-gray-900 transition-colors font-bold' />
+                    </Button>
                 </div>
                 <div className='mt-2'>{children}</div>
             </div>
