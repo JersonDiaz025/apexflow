@@ -20,7 +20,7 @@ export class UsersService {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(data.password, salt);
 
-    const user = this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         email: data.email,
         name: data.name,

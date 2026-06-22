@@ -2,7 +2,8 @@
 
 import { useActionState } from 'react';
 import { Button } from '@/components';
-import { ErrorLabel } from '@/components/shared/ErrorLabel';
+import useActionToast from '@/hooks/use-action-toast';
+import { ROUTES } from '@/constants/routes.constant';
 import { FormField } from '@/components/shared/FormField';
 import { INITIAL_FORM_STATE } from '@/schemas/auth.schema';
 import { BaseFormTexts, FormProps } from '@/types/form.types';
@@ -14,6 +15,8 @@ export default function FormContent<T extends BaseFormTexts>({
     texts,
 }: FormProps<T>) {
     const [state, formAction, pending] = useActionState(action, INITIAL_FORM_STATE);
+    const currentRoute = isRegister ? ROUTES.REGISTER : ROUTES.LOGIN;
+    useActionToast(state, currentRoute);
 
     return (
         <form action={formAction} className='space-y-6'>
@@ -53,7 +56,6 @@ export default function FormContent<T extends BaseFormTexts>({
                     label={pending ? texts.loadingButton : texts.submitButton}
                 />
             </div>
-            {state?.message && <ErrorLabel errorLabel={state.message} />}
         </form>
     );
 }

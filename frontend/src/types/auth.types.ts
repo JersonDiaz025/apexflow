@@ -56,5 +56,6 @@ export type AuthState = {
 export interface ApiError {
     message: string | string[];
     status?: number;
+    statusCode?: number;
     errors?: Record<string, string[]>;
 }

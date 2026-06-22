@@ -1,8 +1,8 @@
 import data from '@/data/auth/data.json';
 import Title from '@/components/shared/Title';
 import AuthLayout from '@/layouts/AuthLayout';
-import { registerAction } from '@/actions/auth/register-action';
 import { ROUTES } from '@/constants/routes.constant';
+import { registerAction } from '@/actions/auth/register-action';
 import FormContent from '@/features/auth/components/FormContent';
 
 export default function RegisterPage() {

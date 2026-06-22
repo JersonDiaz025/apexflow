@@ -1,8 +1,6 @@
 'use server';
 
-import { redirect } from 'next/navigation';
 import { FormState } from '@/types/form.types';
-import { ROUTES } from '@/constants/routes.constant';
 import { createSession } from '@/utils/session.lib';
 import { handleActionError } from '@/utils/error-handler';
 import { authService } from '@/features/auth/services/auth.service';
@@ -24,8 +22,12 @@ export async function loginAction(prevState: FormState, formData: FormData): Pro
     try {
         const res = await authService.login(result.data);
         await createSession(res.token);
+        return {
+            ...INITIAL_FORM_STATE,
+            success: true,
+            message: res.message,
+        };
     } catch (error) {
         return handleActionError(error, currentFields);
     }
-    redirect(ROUTES.BOARDS);
 }

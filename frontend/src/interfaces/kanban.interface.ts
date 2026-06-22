@@ -12,6 +12,12 @@ export interface Task {
     columnId: string;
 }
 
+export interface BoardMember {
+    id: string;
+    name: string;
+    avatar: string;
+}
+
 export interface Column {
     id: string;
     title: string;
@@ -22,6 +28,7 @@ export interface Column {
 export interface Board {
     id: string;
     title: string;
+    description: string;
     columns: Column[];
 }
 

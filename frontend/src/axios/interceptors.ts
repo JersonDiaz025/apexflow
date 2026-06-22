@@ -1,6 +1,7 @@
 import { ApiError } from '@/types/auth.types';
-import { logout } from '@/actions/auth/logout-action';
+import { toast } from '@/utils/notification.util';
 import { getAuthHeaders } from '@/utils/session.lib';
+import { logout } from '@/actions/auth/logout-action';
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 // 1. Interceptor de Respuesta (Para el CLIENTE/Navegador)
@@ -14,6 +15,9 @@ export const setupResponseInterceptors = (api: AxiosInstance): AxiosInstance => 
 
             if (status === 401 || message === 'SESSION_NOT_FOUND') {
                 if (typeof window !== 'undefined') {
+                    toast.error('Sesión expirada', {
+                        description: 'Por favor, vuelve a iniciar sesión.',
+                    });
                     await logout();
                 }
             }

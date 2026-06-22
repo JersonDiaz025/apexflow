@@ -13,7 +13,7 @@ export const ROUTES = {
     REGISTER: '/register' as RouteString,
     LOGOUT: '/logout' as RouteString,
     // Rutas Protegidas (Dashboard)
-    BOARDS: '/boards' as RouteString, // Tu Lobby minimalista sin sidebar
+    BOARDS: '/boards' as RouteString,
     BOARD_DETAIL: (id: string): RouteString => `/board/${id}`, // El Kanban interno
     PROFILE: '/profile' as RouteString,
 } as const;

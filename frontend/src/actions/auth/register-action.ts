@@ -1,8 +1,8 @@
 'use server';
 
 import { FormState } from '@/types/form.types';
-import { handleActionError } from '@/utils/error-handler';
 import { RegisterDto } from '@/types/auth.types';
+import { handleActionError } from '@/utils/error-handler';
 import { authService } from '@/features/auth/services/auth.service';
 import { INITIAL_FORM_STATE, authSchema } from '@/schemas/auth.schema';
 
@@ -21,7 +21,6 @@ export async function registerAction(prevState: FormState, formData: FormData): 
 
     try {
         const res = await authService.register(result.data as RegisterDto);
-        console.log('Registro', res);
         return {
             ...INITIAL_FORM_STATE,
             success: res.success,
@@ -30,6 +29,4 @@ export async function registerAction(prevState: FormState, formData: FormData): 
     } catch (error) {
         return handleActionError(error, currentFields);
     }
-
-    // return INITIAL_FORM_STATE;
 }

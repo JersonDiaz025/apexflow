@@ -11,6 +11,7 @@ interface TopNavbarProps {
     showSearch?: boolean;
     showMembers?: boolean;
     searchPlaceholder?: string;
+    showNotifications?: boolean;
     searchValue?: string;
     onSearchChange?: (value: string) => void;
     members?: Array<{ id: string; name: string; avatar?: string }>;
@@ -23,6 +24,7 @@ const TopNavbar = ({
     showMembers = false,
     searchPlaceholder = 'Buscar...',
     searchValue,
+    showNotifications = false,
     onSearchChange,
     members,
     onAddMemberClick,
@@ -60,10 +62,13 @@ const TopNavbar = ({
                 )}
 
                 {/* Notificaciones */}
-                <button className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative'>
-                    <Bell size={19} />
-                    <span className='absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white' />
-                </button>
+
+                {showNotifications && (
+                    <button className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative'>
+                        <Bell size={19} />
+                        <span className='absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-white' />
+                    </button>
+                )}
 
                 {/* Ajustes */}
                 <button className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors'>

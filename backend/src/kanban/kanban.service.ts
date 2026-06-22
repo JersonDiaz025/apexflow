@@ -1,36 +1,32 @@
 import { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
+import { getAvatarInitials } from '@/utils/avatar.util';
 import { MoveTaskDto } from '@/kanban/dtos/move-task.dto';
 import { CreateTaskDto } from '@/kanban/dtos/create-task.dto';
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { mapToBoardCardDto } from '@/utils/board/mapper-board';
 import { CreateBoardDto } from '@/kanban/dtos/create-board.dto';
 import { CreateColumnDto } from '@/kanban/dtos/create-column.dto';
+import { boardCardSelect } from '@/kanban/selectors/board.selector';
 import { TaskMovementResult } from '@/kanban/interfaces/kanban-events.interface';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 
 @Injectable()
 export class KanbanService {
   constructor(private readonly prisma: PrismaService) {}
 
   /**
-   * Obtiene todos los tableros donde el usuario es dueño O es miembro colaborador.
+   * Obtiene todos los tableros donde el usuario es dueño O es miembro colaborador,
+   * incluyendo la metadata necesaria para renderizar las tarjetas del Dashboard.
    */
   async getBoards(userId: string) {
-    return this.prisma.board.findMany({
+    const boards = await this.prisma.board.findMany({
       where: {
         OR: [{ ownerId: userId }, { members: { some: { id: userId } } }],
       },
-      select: {
-        id: true,
-        title: true,
-        ownerId: true,
-        owner: {
-          select: { name: true, email: true },
-        },
-      },
-      orderBy: {
-        title: 'asc',
-      },
+      select: boardCardSelect,
     });
+
+    return boards.map((board) => mapToBoardCardDto(board));
   }
 
   /**
@@ -40,7 +36,7 @@ export class KanbanService {
     return this.prisma.board.create({
       data: {
         title: dto.title,
-        ownerId: ownerId, // Enlazado al creador
+        ownerId: ownerId,
       },
     });
   }

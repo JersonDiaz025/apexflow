@@ -26,9 +26,11 @@ model User {
 model Board {
   id         String        @id @default(uuid())
   title      String
+  description String?       @db.VarChar(255)
   columns    Column[]
   activities ActivityLog[]
   createdAt  DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
   ownerId    String
   owner      User          @relation("BoardOwner", fields: [ownerId], references: [id], onDelete: Cascade)

@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
-// import AuthProvider from '@/providers/auth.provider';
-// import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import AppLayout from '@/layouts/AppLayout';
+import { Toaster } from 'sileo';
 
 const inter = Inter({
     subsets: ['latin'],
@@ -24,10 +22,11 @@ export default function RootLayout({
     return (
         <html lang='es' className={`${inter.variable}`}>
             <body className='antialiased'>
+                <Toaster position='top-right' />
                 {children}
                 {/* <AppLayout>{children}</AppLayout> */}
                 {/* <Suspense fallback={null}> */}
-                    {/* <AuthProvider>{children}</AuthProvider> */}
+                {/* <AuthProvider>{children}</AuthProvider> */}
                 {/* </Suspense> */}
             </body>
         </html>
