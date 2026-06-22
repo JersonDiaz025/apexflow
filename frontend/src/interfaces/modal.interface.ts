@@ -1,4 +1,4 @@
-export type ModalType = 'CREATE_BOARD' | 'TASK_DETAIL';
+export type ModalType = 'CREATE_BOARD' | 'TASK_DETAIL' | 'INVITE_MEMBERS';
 
 interface ModalData {
     boardId?: string;

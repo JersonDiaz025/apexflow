@@ -4,7 +4,7 @@ import { FormState } from '@/types/form.types';
 import { createSession } from '@/utils/session.lib';
 import { handleActionError } from '@/utils/error-handler';
 import { authService } from '@/features/auth/services/auth.service';
-import { authSchema, INITIAL_FORM_STATE } from '@/schemas/auth.schema';
+import { authSchema, CreateAuthInput, INITIAL_FORM_STATE } from '@/schemas/auth.schema';
 
 export async function loginAction(prevState: FormState, formData: FormData): Promise<FormState> {
     const data = Object.fromEntries(formData);
@@ -28,6 +28,6 @@ export async function loginAction(prevState: FormState, formData: FormData): Pro
             message: res.message,
         };
     } catch (error) {
-        return handleActionError(error, currentFields);
+        return handleActionError<CreateAuthInput>(error, currentFields);
     }
 }

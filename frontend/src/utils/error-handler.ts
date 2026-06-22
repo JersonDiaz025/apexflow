@@ -1,15 +1,18 @@
 import { AxiosError } from 'axios';
-import { FormState } from '@/types/form.types';
+import { GenericFormState } from '@/types/form.types';
 import { NestErrorResponse } from '@/types/api.types';
-import { INITIAL_FORM_STATE } from '@/schemas/auth.schema';
 
-export function handleActionError(error: unknown, currentData?: Record<string, string>): FormState {
-    const formError: FormState = {
-        ...INITIAL_FORM_STATE,
-        data: currentData || {},
+export function handleActionError<T>(
+    error: unknown,
+    currentData?: Partial<T>
+): GenericFormState<T> {
+    const formError: GenericFormState<T> = {
         success: false,
         message: 'Ocurrió un error inesperado. Inténtalo de nuevo.',
+        errors: {},
+        data: currentData || ({} as Partial<T>),
     };
+
     if (error instanceof AxiosError) {
         const apiData = error.response?.data as NestErrorResponse | undefined;
 

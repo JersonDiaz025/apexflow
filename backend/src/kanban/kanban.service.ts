@@ -25,7 +25,6 @@ export class KanbanService {
       },
       select: boardCardSelect,
     });
-
     return boards.map((board) => mapToBoardCardDto(board));
   }
 
@@ -36,6 +35,7 @@ export class KanbanService {
     return this.prisma.board.create({
       data: {
         title: dto.title,
+        description: dto.description,
         ownerId: ownerId,
       },
     });

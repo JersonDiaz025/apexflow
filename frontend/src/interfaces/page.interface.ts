@@ -1,5 +1,5 @@
 export type Props = {
     params: Promise<{
-        boardId: string;
+        id: string;
     }>;
 };

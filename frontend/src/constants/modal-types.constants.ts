@@ -1,4 +1,5 @@
 export const MODAL_TYPES = {
     CREATE_BOARD: 'CREATE_BOARD',
+    INVITE_MEMBERS: 'INVITE_MEMBERS',
     TASK_DETAIL: 'TASK_DETAIL',
 } as const;

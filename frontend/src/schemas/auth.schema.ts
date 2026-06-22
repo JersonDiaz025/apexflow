@@ -25,3 +25,6 @@ export const authSchema = z.object({
         .max(20, 'El nombre no puede superar los 20 caracteres')
         .optional(),
 });
+
+export type CreateAuthInput = z.infer<typeof authSchema>;
+

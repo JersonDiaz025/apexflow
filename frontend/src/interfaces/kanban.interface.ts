@@ -29,6 +29,9 @@ export interface Board {
     id: string;
     title: string;
     description: string;
+    totalColumns?: number;
+    totalTasks?: number;
+    members?: BoardMember[];
     columns: Column[];
 }
 
