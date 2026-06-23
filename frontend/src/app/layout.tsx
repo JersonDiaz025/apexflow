@@ -23,7 +23,7 @@ export default function RootLayout({
     return (
         <html lang='es' className={`${inter.variable}`}>
             <body className='antialiased'>
-                <Toaster position='top-right' />
+                <Toaster position='top-right'/>
                 <ModalProvider />
                 {children}
             </body>

@@ -17,6 +17,7 @@ export const ROUTES = {
     BOARD_DETAIL: (id: string): RouteString => `/board/${id}`, // El Kanban interno
     PROFILE: '/profile' as RouteString,
     CONFIG: '/config',
+    TEAM: '/team',
 } as const;
 
 /**
@@ -35,6 +36,11 @@ export const API_ENDPOINTS = {
         CREATE_BOARD: `${KANBAN_API_PREFIX}/board`,
         CREATE_COLUMN: `${KANBAN_API_PREFIX}/column`,
         CREATE_TASK: `${KANBAN_API_PREFIX}/task`,
+    },
+    USERS: '/user',
+    TEAM: {
+        INVITE_USER: (boardId: string) => `${KANBAN_API_PREFIX}/${boardId}/invite`,
+        INVITE_GLOBAL: `${KANBAN_API_PREFIX}/invite-global`,
     },
 } as const;
 

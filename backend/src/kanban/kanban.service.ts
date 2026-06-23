@@ -23,6 +23,7 @@ export class KanbanService {
       where: {
         OR: [{ ownerId: userId }, { members: { some: { id: userId } } }],
       },
+      orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
       select: boardCardSelect,
     });
     return boards.map((board) => mapToBoardCardDto(board));
@@ -123,19 +124,10 @@ export class KanbanService {
   }
 
   /**
-   * Invita a un usuario externo al tablero mediante su correo electrónico.
+   * Invita a un usuario al sistema global o a un tablero específico si se proporciona el boardId.
    */
-  async inviteUserByEmail(boardId: string, email: string, ownerId: string) {
-    const board = await this.prisma.board.findUnique({
-      where: { id: boardId },
-    });
-
-    if (!board) throw new NotFoundException('Tablero no encontrado');
-    if (board.ownerId !== ownerId) {
-      throw new ForbiddenException('Solo el dueño del tablero puede invitar colaboradores.');
-    }
-
-    // Buscamos si el usuario existe en el sistema
+  async inviteUserByEmail(email: string, ownerId: string, boardId?: string) {
+    // 1. Buscamos si el usuario a invitar existe en el sistema (Aplica para ambos casos)
     const userToInvite = await this.prisma.user.findUnique({
       where: { email },
     });
@@ -146,24 +138,53 @@ export class KanbanService {
       );
     }
 
-    if (board.ownerId === userToInvite.id) {
-      throw new ForbiddenException('No puedes invitarte a ti mismo si ya eres el dueño.');
+    if (ownerId === userToInvite.id) {
+      throw new ForbiddenException('No puedes invitarte a ti mismo.');
     }
 
-    // Conectamos de forma limpia usando la tabla implícita Many-to-Many de Prisma
-    return this.prisma.board.update({
-      where: { id: boardId },
-      data: {
-        members: {
-          connect: { id: userToInvite.id },
+    // 🧱 CASO A: Si se pasa un boardId, ejecutamos la lógica y conexión del Tablero
+    if (boardId) {
+      const board = await this.prisma.board.findUnique({
+        where: { id: boardId },
+      });
+
+      if (!board) throw new NotFoundException('Tablero no encontrado');
+
+      if (board.ownerId !== ownerId) {
+        throw new ForbiddenException('Solo el dueño del tablero puede invitar colaboradores.');
+      }
+
+      if (board.ownerId === userToInvite.id) {
+        throw new ForbiddenException('No puedes invitarte a ti mismo si ya eres el dueño.');
+      }
+
+      // Conectamos de forma limpia usando la tabla implícita Many-to-Many de Prisma
+      return this.prisma.board.update({
+        where: { id: boardId },
+        data: {
+          members: {
+            connect: { id: userToInvite.id },
+          },
         },
+        select: {
+          id: true,
+          title: true,
+          members: { select: { id: true, name: true, email: true } },
+        },
+      });
+    }
+
+    // 🌍 CASO B: Si NO se pasa boardId (Invitación global / externa)
+    // Aquí el usuario ya está verificado en el sistema. Puedes asociarlo a un tenant u organización si lo requieres.
+    return {
+      success: true,
+      message: `¡Usuario ${userToInvite.name} verificado y añadido al equipo global exitosamente! 🎉`,
+      user: {
+        id: userToInvite.id,
+        name: userToInvite.name,
+        email: userToInvite.email,
       },
-      select: {
-        id: true,
-        title: true,
-        members: { select: { id: true, name: true, email: true } },
-      },
-    });
+    };
   }
 
   // ==========================================

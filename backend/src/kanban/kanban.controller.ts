@@ -6,6 +6,7 @@ import { CreateBoardDto } from '@/kanban/dtos/create-board.dto';
 import { CreateColumnDto } from '@/kanban/dtos/create-column.dto';
 import { AuthenticatedRequest } from '@/kanban/interfaces/auth.interface';
 import { Body, Controller, Get, Param, Post, UseGuards, Req } from '@nestjs/common';
+import { ROUTES } from '@nestjs/core/router/router-module';
 
 @Controller(KANBAN.BASE)
 export class KanbanController {
@@ -48,7 +49,6 @@ export class KanbanController {
     return this.kanbanService.createTask(dto, userId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post(KANBAN.INVITE)
   inviteUser(
     @Param('id') boardId: string,
@@ -56,6 +56,13 @@ export class KanbanController {
     @Req() req: AuthenticatedRequest
   ) {
     const ownerId = req.user.userId;
-    return this.kanbanService.inviteUserByEmail(boardId, email, ownerId);
+    return this.kanbanService.inviteUserByEmail(email, ownerId, boardId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(KANBAN.INVITE_GLOBAL)
+  inviteGlobal(@Body('email') email: string, @Req() req: AuthenticatedRequest) {
+    const ownerId = req.user.userId;
+    return this.kanbanService.inviteUserByEmail(email, ownerId);
   }
 }

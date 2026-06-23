@@ -26,7 +26,7 @@ export function Modal({ isOpen, onClose, title, description, children }: ModalPr
                             className='text-xl font-bold text-gray-900 tracking-tight'
                         />
                         {description && (
-                            <Title text={description} className='text-sm text-gray-500 mt-4' />
+                            <Title text={description} className='text-sm max-w-lg text-gray-500 mt-4' />
                         )}
                     </div>
                     <Button

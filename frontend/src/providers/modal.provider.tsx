@@ -5,6 +5,7 @@ import { useModalStore } from '@/store/modal.store';
 import { Modal } from '@/components/shared/Modal';
 import { MODAL_TYPES } from '@/constants/modal-types.constants';
 import CreateBoardForm from '@/features/boards/components/CreateBoardForm';
+import InviteUserForm from '@/features/team/components/InviteUserForm';
 
 const ViewTaskContent = ({ id }: { id?: string }) => (
     <div className='text-sm text-gray-600'>Contenido del las tarjeta: {id}</div>
@@ -14,9 +15,7 @@ export function ModalProvider() {
     const { isOpen, type, data, onClose } = useModalStore();
     const [isMounted, setIsMounted] = useState(false);
 
-    // Evita errores de Hidratación en Next.js (SSR vs CSR)
     useEffect(() => {
-        // Defer setting mounted to avoid synchronous setState within effect
         const t = setTimeout(() => setIsMounted(true), 0);
         return () => clearTimeout(t);
     }, []);
@@ -25,7 +24,6 @@ export function ModalProvider() {
 
     return (
         <>
-            {/* MODAL 1: CREAR TABLERO */}
             <Modal
                 isOpen={isOpen && type === MODAL_TYPES.CREATE_BOARD}
                 onClose={onClose}
@@ -34,18 +32,14 @@ export function ModalProvider() {
             >
                 <CreateBoardForm />
             </Modal>
-
-            {/* MODAL 2: VER DETALLE DE CARD
             <Modal
-                isOpen={isOpen && type === 'viewBoardCard'}
+                isOpen={isOpen && type === MODAL_TYPES.INVITE_USER}
                 onClose={onClose}
-                title='Detalles del Tablero'
-                description='Monitorea y edita la metadata del espacio seleccionado.'
+                title='Enviar invitación'
+                description='Ingresa el correo electrónico de tu compañero de equipo para compartir este espacio de trabajo.'
             >
-                <ViewBoardCardContent id={data.boardId} />
-            </Modal> */}
-
-            {/* MODAL 2: VER DETALLE DE TASK */}
+                <InviteUserForm />
+            </Modal>
             <Modal
                 isOpen={isOpen && type === MODAL_TYPES.TASK_DETAIL}
                 onClose={onClose}

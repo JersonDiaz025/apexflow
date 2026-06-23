@@ -34,6 +34,28 @@ export class UsersService {
     };
   }
 
+  // Get all users
+  async findAll(search?: string) {
+    const whereCondition = search
+      ? {
+          OR: [
+            { name: { contains: search, mode: 'insensitive' as const } },
+            { email: { contains: search, mode: 'insensitive' as const } },
+          ],
+        }
+      : {};
+
+    const users = await this.prisma.user.findMany({
+      where: whereCondition,
+      select: userSelect,
+    });
+
+    return users.map((user) => ({
+      ...user,
+      avatar: getAvatarInitials(user?.name, 2),
+    }));
+  }
+
   // Find user by email
   async findOneByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({

@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect, startTransition } from 'react';
 import { useAuthStore } from '@/store/auth.store';
-import { LogOut, User as UserIcon } from 'lucide-react';
+import { LogOut, Settings, User as UserIcon } from 'lucide-react';
 import { logout as logoutAction } from '@/actions/auth/logout-action';
-import { toast } from '@/utils/notification.util';
+import Link from 'next/link';
+import { ROUTES } from '@/constants/routes.constant';
+import Button from './shared/Button';
 
 export default function UserDropdown() {
     const { user, logout } = useAuthStore();
@@ -46,7 +48,7 @@ export default function UserDropdown() {
 
             {/* Menú Flotante Dropdown */}
             {isOpen && (
-                <div className='absolute right-0 mt-2 w-64 bg-white border border-outline-variant rounded-xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150'>
+                <div className='absolute right-0 mt-2 w-70 bg-white border border-outline-variant rounded-xl shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150'>
                     {/* Encabezado con Info del Usuario */}
                     <div className='px-4 py-3 border-b border-outline-variant/60'>
                         <p className='text-sm font-semibold text-on-surface truncate'>
@@ -58,22 +60,29 @@ export default function UserDropdown() {
                     </div>
 
                     {/* Acciones */}
-                    <div className='p-1'>
-                        <a
-                            href='/profile'
+                    <div className='p-4 flex flex-col gap-2'>
+                        <Link
+                            className='flex items-center cursor-pointer gap-2 px-3 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface rounded-lg transition-colors'
+                            href={ROUTES.CONFIG}
+                        >
+                            <Settings size={19} />
+                            <span>Configuraciones</span>
+                        </Link>
+                        <Link
+                            href={ROUTES.PROFILE}
                             className='flex items-center cursor-pointer gap-2 px-3 py-2 text-sm text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface rounded-lg transition-colors'
                         >
-                            <UserIcon size={16} />
+                            <UserIcon size={19} />
                             <span>Mi Perfil</span>
-                        </a>
+                        </Link>
 
-                        <button
+                        <Button
                             onClick={handleLogout}
-                            className='w-full flex cursor-pointer items-center gap-2 px-3 py-2 text-sm text-error hover:bg-error/10 rounded-lg transition-colors font-medium mt-1'
+                            className='w-full bg-red-600 flex rounded-md cursor-pointer items-center gap-2 px-3 py-2 text-sm text-error hover:bg-error/10 transition-colors font-medium mt-1'
                         >
-                            <LogOut size={16} />
+                            <LogOut size={19} />
                             <span>Cerrar Sesión</span>
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}

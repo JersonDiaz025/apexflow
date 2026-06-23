@@ -5,5 +5,6 @@ export const KANBAN = {
   BOARD_ID: 'board/:id',
   COLUMN: 'column',
   TASK: 'task',
-  INVITE: 'board/:id/invite',
+  INVITE: '/:id/invite',
+  INVITE_GLOBAL: 'invite-global'
 } as const;

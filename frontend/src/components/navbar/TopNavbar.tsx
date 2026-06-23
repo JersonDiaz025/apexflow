@@ -66,13 +66,6 @@ const TopNavbar = ({
                     </button>
                 )}
 
-                <Link
-                    className='p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors'
-                    href={ROUTES.CONFIG}
-                >
-                    <Settings size={19} />
-                </Link>
-
                 <div className='h-6 w-[1px] bg-outline-variant/60 mx-1 hidden sm:block' />
                 <UserDropdown />
             </div>
