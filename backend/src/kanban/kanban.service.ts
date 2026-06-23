@@ -1,6 +1,5 @@
 import { Prisma } from '../../generated/prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
-import { getAvatarInitials } from '@/utils/avatar.util';
 import { MoveTaskDto } from '@/kanban/dtos/move-task.dto';
 import { CreateTaskDto } from '@/kanban/dtos/create-task.dto';
 import { mapToBoardCardDto } from '@/utils/board/mapper-board';
