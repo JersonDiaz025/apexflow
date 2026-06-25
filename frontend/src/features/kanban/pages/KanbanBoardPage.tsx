@@ -9,8 +9,7 @@ import { BoardActions } from '@/features/kanban/components/BoardActions';
 import { BoardPageProps } from '@/features/kanban/interfaces/board-page.interface';
 
 const KanbanBoardPage = ({ boardData }: BoardPageProps) => {
-    console.log('Boards detail', boardData);
-    const currentTitle = boardData?.title;
+    const currentBoard = boardData?.title;
 
     const [isActivityOpen, setIsActivityOpen] = useState(false);
 
@@ -20,10 +19,7 @@ const KanbanBoardPage = ({ boardData }: BoardPageProps) => {
         { id: 'u3', name: 'Jhan Pierre', initial: 'P', bg: 'bg-emerald-500' },
     ];
 
-    const items = useBreadcrumb([
-        { label: 'Tableros', href: ROUTES.BOARDS },
-        { label: currentTitle },
-    ]);
+    const items = [{ label: 'Tableros', href: ROUTES.BOARDS }, { label: currentBoard }];
 
     const breadcrumbItems = useBreadcrumb(items);
 

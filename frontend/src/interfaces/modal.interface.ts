@@ -1,8 +1,9 @@
-export type ModalType = 'CREATE_BOARD' | 'TASK_DETAIL' | 'INVITE_USER' | 'SEND_INVITATION_MEMBER';
+export type ModalType = 'CREATE_BOARD' | 'TASK_DETAIL' | 'INVITE_USER' | 'SEND_INVITATION_MEMBER' | 'CREATE_TASK' | 'CREATE_COLUMN';
 
 interface ModalData {
     boardId?: string;
     ownerId?: string;
+    columnId?: string;
 }
 
 export interface ModalStore {

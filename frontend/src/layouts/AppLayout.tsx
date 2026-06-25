@@ -37,7 +37,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                         members={[]}
                         handleOpenModal={onOpen}
                         searchPlaceholder='Buscar...'
-                        onAddMemberClick={() => onOpen(MODAL_TYPES.INVITE_MEMBERS)}
+                        onAddMemberClick={() => onOpen(MODAL_TYPES.INVITE_USER)}
                     />
                 )}
 

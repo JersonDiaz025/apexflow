@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Bell, Settings } from 'lucide-react';
-import { useAuthStore } from '@/store/auth.store';
+import { Bell } from 'lucide-react';
 import { ROUTES } from '@/constants/routes.constant';
 import { TopNavbarProps } from '@/interfaces/navbar.interface';
 import { MODAL_TYPES } from '@/constants/modal-types.constants';
@@ -21,7 +20,6 @@ const TopNavbar = ({
     members,
     onAddMemberClick,
 }: TopNavbarProps) => {
-    // const { user } = useAuthStore();
     return (
         <header className='h-16 border-b border-outline-variant bg-white/85 backdrop-blur-md flex items-center justify-between px-4 md:px-8 sticky top-0 z-30 w-full select-none'>
             <div className='flex items-center gap-4 md:gap-6 min-w-0'>

@@ -6,6 +6,7 @@ import { Modal } from '@/components/shared/Modal';
 import { MODAL_TYPES } from '@/constants/modal-types.constants';
 import CreateBoardForm from '@/features/boards/components/CreateBoardForm';
 import InviteUserForm from '@/features/team/components/InviteUserForm';
+import CreateColumnForm from '@/features/kanban/components/CreateColumn';
 
 const ViewTaskContent = ({ id }: { id?: string }) => (
     <div className='text-sm text-gray-600'>Contenido del las tarjeta: {id}</div>
@@ -47,6 +48,15 @@ export function ModalProvider() {
                 description='Viendo detalle de card'
             >
                 <ViewTaskContent id={data.boardId} />
+            </Modal>
+            {/* Columns and tasks */}
+            <Modal
+                isOpen={isOpen && type === MODAL_TYPES.CREATE_COLUMN}
+                onClose={onClose}
+                title='Nueva columna'
+                description='Define un nuevo paso en el flujo de trabajo de tu tablero.'
+            >
+                <CreateColumnForm />
             </Modal>
         </>
     );
